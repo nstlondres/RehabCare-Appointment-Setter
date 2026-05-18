@@ -1,0 +1,363 @@
+﻿@{
+    Layout = "~/Views/Shared/_UserAccount.cshtml";
+    ViewBag.Title = "Patients";
+}
+
+<style>
+    .rc-wrapper {
+        display: flex;
+        align-items: flex-start;
+    }
+
+    .rc-sidebar {
+        width: 200px;
+        flex-shrink: 0;
+        background: #fff;
+        box-shadow: 2px 0 8px rgba(0,0,0,0.06);
+        padding: 14px 0;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
+    }
+
+    .rc-sidebar-nav a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 20px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #666;
+        text-decoration: none;
+        border-left: 3px solid transparent;
+        transition: all 0.15s;
+    }
+
+        .rc-sidebar-nav a i {
+            font-size: 14px;
+            width: 18px;
+            text-align: center;
+            color: #bbb;
+        }
+
+        .rc-sidebar-nav a:hover {
+            background: #f0fbfb;
+            color: #0cb8b6;
+            border-left-color: #0cb8b6;
+            text-decoration: none;
+        }
+
+            .rc-sidebar-nav a:hover i {
+                color: #0cb8b6;
+            }
+
+        .rc-sidebar-nav a.rc-active {
+            background: #e8f9f9;
+            color: #0cb8b6;
+            border-left-color: #0cb8b6;
+            font-weight: 700;
+        }
+
+            .rc-sidebar-nav a.rc-active i {
+                color: #0cb8b6;
+            }
+
+    .rc-content {
+        flex: 1;
+        padding: 32px 28px 48px;
+        min-width: 0;
+    }
+
+    .sortable-th {
+        cursor: pointer;
+        user-select: none;
+        white-space: nowrap;
+    }
+
+        .sortable-th:hover {
+            background: #0aa9a7 !important;
+        }
+
+    .sort-icon {
+        margin-left: 4px;
+        font-size: 11px;
+        opacity: 0.7;
+    }
+
+    .pagination-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 18px;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+        .pagination-bar .page-info {
+            font-size: 12px;
+            color: #888;
+        }
+
+    .pagination-btns {
+        display: flex;
+        align-items: center;
+        gap: 0;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        overflow: hidden;
+    }
+
+        .pagination-btns button {
+            border: none;
+            border-right: 1px solid #ddd;
+            background: #fff;
+            color: #555;
+            padding: 6px 12px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s;
+            white-space: nowrap;
+        }
+
+            .pagination-btns button:last-child {
+                border-right: none;
+            }
+
+            .pagination-btns button:hover:not(:disabled):not(.active) {
+                background: #f0fbfb;
+                color: #0cb8b6;
+            }
+
+            .pagination-btns button.active {
+                background: #0cb8b6;
+                color: #fff;
+                font-weight: 600;
+            }
+
+            .pagination-btns button:disabled {
+                opacity: 0.38;
+                cursor: default;
+            }
+
+    .filter-label {
+        font-size: 11px;
+        font-weight: 600;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 6px;
+    }
+
+    .query-section {
+        background: #f8fffe;
+        border: 1px solid #e0f5f5;
+        border-radius: 6px;
+        padding: 14px;
+        margin-bottom: 16px;
+    }
+</style>
+
+<div class="rc-wrapper">
+
+    <div class="rc-sidebar">
+        <nav class="rc-sidebar-nav">
+            <a href="/UserAccount/Dashboard"><i class="fas fa-th-large"></i> Dashboard</a>
+            <a href="/UserAccount/AppointmentManagement"><i class="fas fa-calendar-plus"></i> Appointments</a>
+            <a href="/UserAccount/Patients" class="rc-active"><i class="fas fa-users"></i> Patients</a>
+            <a href="/UserAccount/Therapists"> <i class="fas fa-user-md"></i> Therapists</a>
+            <a href="/UserAccount/Payment"><i class="fas fa-credit-card"></i> Payment</a>
+        </nav>
+    </div>
+
+    <div class="rc-content" ng-controller="UserAccountController" ng-init="loadUsers()">
+
+        <div style="margin-bottom:24px;">
+            <h2 style="font-size:22px; font-weight:800; color:#1a2942; margin:0;">Patients</h2>
+            <p style="font-size:13px; color:#aaa; margin:2px 0 0;">User management</p>
+        </div>
+
+        <div class="row">
+
+            <div class="col-lg-4 col-md-5 mb-4">
+                <div class="contact-area style-two" style="box-shadow:0 4px 24px rgba(0,0,0,0.10); border-radius:8px; padding:30px;">
+                    <div class="section-title mb-3"><h3>Edit User</h3></div>
+                    <div class="mb-3">
+                        <label>First Name</label>
+                        <div style="position:relative;">
+                            <i class="fas fa-user" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; z-index:1;"></i>
+                            <input type="text" class="form-control" style="padding-left:36px;" ng-model="FName" placeholder="First name" />
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label>Middle Name <span style="color:#aaa; font-size:11px;">(optional)</span></label>
+                        <div style="position:relative;">
+                            <i class="fas fa-user" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; z-index:1;"></i>
+                            <input type="text" class="form-control" style="padding-left:36px;" ng-model="MName" placeholder="Middle name" />
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label>Last Name</label>
+                        <div style="position:relative;">
+                            <i class="fas fa-user" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; z-index:1;"></i>
+                            <input type="text" class="form-control" style="padding-left:36px;" ng-model="LName" placeholder="Last name" />
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label>Username</label>
+                        <div style="position:relative;">
+                            <i class="fas fa-id-card" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; z-index:1;"></i>
+                            <input type="text" class="form-control" style="padding-left:36px;" ng-model="Username" placeholder="Username" />
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label>Password</label>
+                        <div style="position:relative;">
+                            <i class="fas fa-lock" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; z-index:1;"></i>
+                            <input type="password" class="form-control" style="padding-left:36px;" ng-model="Password" placeholder="Password" />
+                        </div>
+                    </div>
+                    <button type="button" class="btn-style-one" style="width:100%; text-align:center; font-size:13px;" ng-click="cancelFunc()">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-lg-8 col-md-7 mb-4">
+                <div class="contact-area style-two" style="box-shadow:0 4px 24px rgba(0,0,0,0.10); border-radius:8px; padding:30px;">
+                    <div class="section-title mb-3"><h3>User List</h3></div>
+
+                    <div class="query-section">
+                        <p class="filter-label"><i class="fas fa-search"></i> Basic Search</p>
+                        <div class="row">
+                            <div class="col-md-9 mb-2">
+                                <div style="position:relative;">
+                                    <i class="fas fa-search" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; z-index:1;"></i>
+                                    <input type="text" class="form-control" style="padding-left:36px;"
+                                           ng-model="patientSearch" ng-change="resetPatientPage()"
+                                           placeholder="Search name or username..." />
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-2">
+                                <button type="button" class="btn-style-one" style="width:100%; text-align:center; font-size:12px;" ng-click="resetPatientFilters()">
+                                    <i class="fas fa-undo"></i> Reset
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="query-section">
+                        <p class="filter-label"><i class="fas fa-filter"></i> Advanced Filter</p>
+                        <div class="row">
+                            <div class="col-md-4 mb-2">
+                                <div style="position:relative;">
+                                    <i class="fas fa-venus-mars" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; z-index:1;"></i>
+                                    <select class="form-control" style="padding-left:36px; appearance:none; -webkit-appearance:none;"
+                                            ng-model="patientGenderFilter" ng-change="resetPatientPage()">
+                                        <option value="">All Genders</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Non-binary">Non-binary</option>
+                                        <option value="Prefer not to say">Prefer not to say</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; pointer-events:none;"></i>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <div style="position:relative;">
+                                    <i class="fas fa-calendar" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; z-index:1;"></i>
+                                    <input type="number" class="form-control" style="padding-left:36px;"
+                                           ng-model="patientYearFrom" ng-change="resetPatientPage()"
+                                           placeholder="Birth year from" min="1900" max="2099" />
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <div style="position:relative;">
+                                    <i class="fas fa-calendar" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; z-index:1;"></i>
+                                    <input type="number" class="form-control" style="padding-left:36px;"
+                                           ng-model="patientYearTo" ng-change="resetPatientPage()"
+                                           placeholder="Birth year to" min="1900" max="2099" />
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-if="hasActivePatientFilters()" style="margin-top:8px; font-size:12px; color:#0cb8b6;">
+                            <i class="fas fa-info-circle"></i>
+                            Filtering by:
+                            <strong ng-if="patientSearch">name "{{patientSearch}}"</strong>
+                            <span ng-if="patientSearch && (patientGenderFilter || patientYearFrom || patientYearTo)"> + </span>
+                            <strong ng-if="patientGenderFilter">gender "{{patientGenderFilter}}"</strong>
+                            <span ng-if="patientGenderFilter && (patientYearFrom || patientYearTo)"> + </span>
+                            <strong ng-if="patientYearFrom || patientYearTo">birth year {{patientYearFrom || '...'}} → {{patientYearTo || '...'}}</strong>
+                            &nbsp;—&nbsp;<strong>{{getFilteredUsers().length}}</strong> result(s)
+                        </div>
+                    </div>
+
+                    <div ng-if="newArray.length === 0" class="text-center py-4" style="color:#aaa;">
+                        <i class="fas fa-users" style="font-size:48px; display:block; margin-bottom:10px;"></i>
+                        No users registered yet.
+                    </div>
+                    <div ng-if="newArray.length > 0 && getFilteredUsers().length === 0" class="text-center py-4" style="color:#aaa;">
+                        <i class="fas fa-search" style="font-size:48px; display:block; margin-bottom:10px;"></i>
+                        No users match your filters.
+                    </div>
+
+                    <div class="table-responsive" ng-if="getFilteredUsers().length > 0">
+                        <table class="table table-hover" style="background:#fff;">
+                            <thead style="background:#0cb8b6; color:#fff;">
+                                <tr>
+                                    <th>#</th>
+                                    <th class="sortable-th" ng-click="sortPatients('FName')">
+                                        First Name <i class="fas sort-icon" ng-class="patientSortField==='FName'?(patientSortReverse?'fa-sort-down':'fa-sort-up'):'fa-sort'"></i>
+                                    </th>
+                                    <th>Middle Name</th>
+                                    <th class="sortable-th" ng-click="sortPatients('LName')">
+                                        Last Name <i class="fas sort-icon" ng-class="patientSortField==='LName'?(patientSortReverse?'fa-sort-down':'fa-sort-up'):'fa-sort'"></i>
+                                    </th>
+                                    <th class="sortable-th" ng-click="sortPatients('Username')">
+                                        Username <i class="fas sort-icon" ng-class="patientSortField==='Username'?(patientSortReverse?'fa-sort-down':'fa-sort-up'):'fa-sort'"></i>
+                                    </th>
+                                    <th>Gender</th>
+                                    <th>Birth Year</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="user in getPagedUsers()" ng-class="{'table-active': editIndex === newArray.indexOf(user)}">
+                                    <td>{{getRowNumber($index)}}</td>
+                                    <td>{{user.FName}}</td>
+                                    <td>{{user.MName || '—'}}</td>
+                                    <td>{{user.LName}}</td>
+                                    <td>{{user.Username}}</td>
+                                    <td>{{user.Gender || '—'}}</td>
+                                    <td>{{getBirthYear(user.BirthDate) || '—'}}</td>
+                                    <td>
+                                        <button class="btn btn-sm" style="background:#0cb8b6; color:#fff; margin-right:4px;"
+                                                ng-click="updFunc(newArray.indexOf(user))">
+                                            <i class="fas fa-edit"></i>
+                                            {{editIndex === newArray.indexOf(user) ? 'Save' : 'Edit'}}
+                                        </button>
+                                        <button class="btn btn-sm btn-danger" ng-click="delFunc(newArray.indexOf(user))">
+                                            <i class="fas fa-trash-alt"></i> Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="pagination-bar">
+                            <span class="page-info">Showing {{getPatientRangeStart()}}–{{getPatientRangeEnd()}} of {{getFilteredUsers().length}} users</span>
+                            <div class="pagination-btns">
+                                <button ng-click="goToPatientPage(1)" ng-disabled="patientPage === 1">First</button>
+                                <button ng-click="prevPatientPage()" ng-disabled="patientPage === 1">&#8249;</button>
+                                <button ng-repeat="p in getPatientPages() track by p" ng-class="{'active': p === $parent.patientPage}" ng-click="goToPatientPage(p)">{{p}}</button>
+                                <button ng-click="nextPatientPage()" ng-disabled="patientPage === getPatientTotalPages()">&#8250;</button>
+                                <button ng-click="goToPatientPage(getPatientTotalPages())" ng-disabled="patientPage === getPatientTotalPages()">Last</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

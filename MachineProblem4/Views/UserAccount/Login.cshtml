@@ -1,0 +1,64 @@
+﻿@{
+    Layout = "~/Views/Shared/_UserAccount.cshtml";
+    ViewBag.Title = "Login";
+}
+
+<section class="page-title text-center" style="background-image:url(/Content/images/background/appoinment.jpg); padding: 60px 0;">
+    <div class="container">
+        <div class="title-text">
+            <h1>Login</h1>
+        </div>
+    </div>
+</section>
+
+<section class="section pb-70" style="padding-top: 60px;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-5 col-md-7">
+                <div class="contact-area style-two" style="box-shadow: 0 4px 24px rgba(0,0,0,0.10); border-radius: 8px; padding: 40px;" ng-controller="UserAccountController">
+
+                    <div class="section-title text-center mb-4">
+                        <h3>Welcome Back</h3>
+                        <p>Please enter your credentials to login.</p>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Username</label>
+                        <div style="position:relative;">
+                            <i class="fas fa-id-card" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; z-index:1;"></i>
+                            <input type="text" class="form-control" style="padding-left:36px;" ng-model="Username" placeholder="Enter your username" />
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label>Password</label>
+                        <div style="position:relative;">
+                            <i class="fas fa-lock" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; z-index:1;"></i>
+                            <input type="password" class="form-control" style="padding-left:36px;" ng-model="Password" placeholder="Enter your password" />
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-6 mb-3">
+                            <button type="button" class="btn-style-one" style="width:100%; text-align:center;" ng-click="loginFunc()">
+                                <i class="fas fa-sign-in-alt"></i> Login
+                            </button>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <button type="button" class="btn-style-one" style="width:100%; text-align:center; background:#6c757d;" ng-click="cancelFunc()">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-2">
+                        <p>
+                            Don't have an account?
+                            <a ng-click="redirectFunc('registration')" style="color:#0cb8b6; cursor:pointer; font-weight:600;">Register here</a>
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

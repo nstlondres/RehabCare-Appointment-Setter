@@ -1,0 +1,156 @@
+@{
+    Layout = "~/Views/Shared/_UserAccount.cshtml";
+    ViewBag.Title = "User Profile";
+}
+
+<section class="page-title text-center" style="background-image:url(/Content/images/background/appoinment.jpg); padding: 60px 0;">
+    <div class="container">
+        <div class="title-text">
+            <h1>User Profile</h1>
+        </div>
+    </div>
+</section>
+
+<section class="section pb-70" style="padding-top: 60px;" ng-controller="UserAccountController" ng-init="loadUserProfile()">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-5 mb-4">
+                <div class="contact-area style-two" style="box-shadow:0 4px 24px rgba(0,0,0,0.10); border-radius:8px; padding:30px;">
+                    <div class="text-center mb-4">
+                        <div style="width:90px; height:90px; border-radius:50%; background:#0cb8b6; display:inline-flex; align-items:center; justify-content:center;">
+                            <i class="fas fa-user" style="font-size:40px; color:#fff;"></i>
+                        </div>
+                        <h4 class="mt-3" style="color:#1a2942; margin-bottom:2px;">{{currentUser.FName}} {{currentUser.LName}}</h4>
+                        <p style="color:#888; margin:0;">{{currentUser.Username}}</p>
+                    </div>
+
+                    <div style="background:#f9fefe; border-left:3px solid #0cb8b6; border-radius:4px; padding:14px; margin-bottom:18px;">
+                        <div style="font-size:12px; color:#888;">Current Appointments</div>
+                        <div style="font-size:28px; font-weight:800; color:#0cb8b6;">{{currentAppointments.length || 0}}</div>
+                    </div>
+
+                    <a class="btn-style-one" style="width:100%; display:block; text-align:center; margin-bottom:10px;" href="/UserAccount/BookAppointment">
+                        <i class="fas fa-calendar-plus"></i> Book Appointment
+                    </a>
+                    <button type="button" class="btn-style-one" style="width:100%; text-align:center; background:#e53935;" ng-click="logoutFunc()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-lg-8 col-md-7 mb-4">
+                <div class="contact-area style-two" style="box-shadow:0 4px 24px rgba(0,0,0,0.10); border-radius:8px; padding:30px;">
+                    <div class="section-title mb-3">
+                        <h3>My Information</h3>
+                        <p>Update your personal details and login information.</p>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label>First Name <span style="color:#e53935;">*</span></label>
+                            <input type="text" class="form-control" ng-model="profile.FName" maxlength="50" />
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label>Middle Name</label>
+                            <input type="text" class="form-control" ng-model="profile.MName" maxlength="50" />
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label>Last Name <span style="color:#e53935;">*</span></label>
+                            <input type="text" class="form-control" ng-model="profile.LName" maxlength="50" />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label>Date of Birth <span style="color:#e53935;">*</span></label>
+                            <input type="date" class="form-control" ng-model="profile.BirthDate" />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label>Gender <span style="color:#e53935;">*</span></label>
+                            <select class="form-control" ng-model="profile.Gender">
+                                <option value="">-- Select Gender --</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Prefer not to say</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label>Contact Number <span style="color:#e53935;">*</span></label>
+                            <input type="text" class="form-control" ng-model="profile.Phone" maxlength="11" ng-keypress="allowNumbersOnly($event)" />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label>Username <span style="color:#e53935;">*</span></label>
+                            <input type="text" class="form-control" ng-model="profile.Username" maxlength="50" />
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label>Address <span style="color:#e53935;">*</span></label>
+                            <input type="text" class="form-control" ng-model="profile.Address" maxlength="255" />
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label>New Password</label>
+                            <input type="password" class="form-control" ng-model="profilePassword" placeholder="Leave blank to keep current password" />
+                        </div>
+                        <div class="col-md-12">
+                            <button type="button" class="btn-style-one" ng-click="updateProfileFunc()">
+                                <i class="fas fa-save"></i> Save Changes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="contact-area style-two" style="box-shadow:0 4px 24px rgba(0,0,0,0.10); border-radius:8px; padding:30px;">
+                    <div class="section-title mb-3">
+                        <h3>Current Appointments</h3>
+                    </div>
+                    <div class="table-responsive" ng-if="currentAppointments.length > 0">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Therapy</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="appt in currentAppointments">
+                                    <td>{{appt.ApptTherapy}}<br><small style="color:#888;">{{appt.ApptTherapist}}</small></td>
+                                    <td>{{appt.ApptDate}}<br><small style="color:#888;">{{appt.ApptTime}}</small></td>
+                                    <td>{{appt.ApptStatus}}<br><small style="color:#888;">{{appt.PaymentStatus}}</small></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p ng-if="currentAppointments.length === 0" style="color:#888;">No current appointments yet.</p>
+                </div>
+            </div>
+
+            <div class="col-lg-6 mb-4">
+                <div class="contact-area style-two" style="box-shadow:0 4px 24px rgba(0,0,0,0.10); border-radius:8px; padding:30px;">
+                    <div class="section-title mb-3">
+                        <h3>Appointment History</h3>
+                    </div>
+                    <div class="table-responsive" ng-if="appointmentHistory.length > 0">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Therapy</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="appt in appointmentHistory">
+                                    <td>{{appt.ApptTherapy}}</td>
+                                    <td>{{appt.ApptDate}}</td>
+                                    <td>{{appt.ApptStatus}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p ng-if="appointmentHistory.length === 0" style="color:#888;">No past appointments yet.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

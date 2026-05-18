@@ -1,0 +1,238 @@
+﻿@{
+    Layout = "~/Views/Shared/_UserAccount.cshtml";
+    ViewBag.Title = "Home";
+}
+
+<section style="background-image:url('/Content/images/about/therapy.jpg'); background-size:cover; background-position:center; position:relative; padding: 120px 0;">
+   
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(26,41,66,0.72); z-index: 0;"></div>
+
+    <div class="container" style="position:relative; z-index:1;">
+        <div class="row align-items-center">
+            <div class="col-lg-7">
+                <p style="color:#0cb8b6; font-weight:600; letter-spacing:2px; text-transform:uppercase; font-size:13px; margin-bottom:12px;">
+                    <i class="fas fa-heartbeat"></i> Rehabilitation Therapy Booking System
+                </p>
+                <h1 style="font-size:48px; font-weight:800; color:#fff; line-height:1.2; margin-bottom:20px;">
+                    Restoring Movement, <br><span style="color:#0cb8b6;">Rebuilding Lives</span>
+                </h1>
+                <p style="color:#ddd; font-size:16px; line-height:1.8; margin-bottom:32px;">
+                    Our team of licensed therapists at RehabCare Hospital provides personalized rehabilitation programs to help you recover faster, move better, and live fully.
+                </p>
+                <div>
+                    <a href="/UserAccount/BookAppointment" class="btn-style-one" style="padding:14px 32px; font-size:15px; margin-right:12px;">
+                        <i class="fas fa-calendar-check"></i> Book Appointment
+                    </a>
+                    <a href="#services" class="btn-style-one" style="padding:14px 32px; font-size:15px; background:transparent; border:2px solid #fff;">
+                        <i class="fas fa-th-large"></i> Our Services
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section style="background:#1a2942; padding: 30px 0;">
+    <div class="container">
+        <div class="row text-center text-white">
+            <div class="col-md-3 col-6 mb-3 mb-md-0">
+                <h3 style="color:#0cb8b6; font-size:32px; font-weight:800; margin:0;">500+</h3>
+                <p style="color:#aaa; margin:0; font-size:13px;">Patients Treated</p>
+            </div>
+            <div class="col-md-3 col-6 mb-3 mb-md-0">
+                <h3 style="color:#0cb8b6; font-size:32px; font-weight:800; margin:0;">4</h3>
+                <p style="color:#aaa; margin:0; font-size:13px;">Therapy Specialties</p>
+            </div>
+            <div class="col-md-3 col-6">
+                <h3 style="color:#0cb8b6; font-size:32px; font-weight:800; margin:0;">15+</h3>
+                <p style="color:#aaa; margin:0; font-size:13px;">Licensed Therapists</p>
+            </div>
+            <div class="col-md-3 col-6">
+                <h3 style="color:#0cb8b6; font-size:32px; font-weight:800; margin:0;">98%</h3>
+                <p style="color:#aaa; margin:0; font-size:13px;">Patient Satisfaction</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="services" style="padding: 70px 0; background:#f0f4f8;">
+    <div class="container">
+        <div class="text-center mb-5">
+            <p style="color:#0cb8b6; font-weight:600; letter-spacing:2px; text-transform:uppercase; font-size:13px;">What We Offer</p>
+            <h2 style="font-size:34px; font-weight:800; color:#1a2942;">Our Therapy Services</h2>
+            <p style="color:#666; max-width:500px; margin:0 auto;">We provide comprehensive rehabilitation programs tailored to each patient's unique needs and recovery goals.</p>
+        </div>
+        <div class="row">
+
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div style="background:#fff; border-radius:12px; padding:32px 24px; text-align:center; box-shadow:0 4px 20px rgba(0,0,0,0.07); border-top:4px solid #0cb8b6; height:100%; transition: transform 0.2s;"
+                     onmouseover="this.style.transform='translateY(-6px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <img src="/Content/images/favicon.png" style="width:64px; height:64px; margin-bottom:16px;" alt="icon" />
+                    <h5 style="color:#1a2942; font-weight:700; margin-bottom:10px;">Physical Therapy</h5>
+                    <p style="color:#888; font-size:14px; line-height:1.7;">Restore movement and function after injury, surgery, or illness through targeted exercises and hands-on treatment.</p>
+                    <a href="/UserAccount/BookAppointment" style="color:#0cb8b6; font-weight:600; font-size:13px; text-decoration:none;">
+                        Book Now <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div style="background:#fff; border-radius:12px; padding:32px 24px; text-align:center; box-shadow:0 4px 20px rgba(0,0,0,0.07); border-top:4px solid #1a2942; height:100%; transition: transform 0.2s;"
+                     onmouseover="this.style.transform='translateY(-6px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <img src="/Content/images/favicon.png" style="width:64px; height:64px; margin-bottom:16px;" alt="icon" />
+                    <h5 style="color:#1a2942; font-weight:700; margin-bottom:10px;">Occupational Therapy</h5>
+                    <p style="color:#888; font-size:14px; line-height:1.7;">Regain independence in daily activities and improve fine motor skills for work, home, and leisure.</p>
+                    <a href="/UserAccount/BookAppointment" style="color:#0cb8b6; font-weight:600; font-size:13px; text-decoration:none;">
+                        Book Now <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div style="background:#fff; border-radius:12px; padding:32px 24px; text-align:center; box-shadow:0 4px 20px rgba(0,0,0,0.07); border-top:4px solid #0cb8b6; height:100%; transition: transform 0.2s;"
+                     onmouseover="this.style.transform='translateY(-6px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <img src="/Content/images/favicon.png" style="width:64px; height:64px; margin-bottom:16px;" alt="icon" />
+                    <h5 style="color:#1a2942; font-weight:700; margin-bottom:10px;">Respiratory Therapy</h5>
+                    <p style="color:#888; font-size:14px; line-height:1.7;">Manage and treat breathing disorders with specialized care plans for improved lung function and quality of life.</p>
+                    <a href="/UserAccount/BookAppointment" style="color:#0cb8b6; font-weight:600; font-size:13px; text-decoration:none;">
+                        Book Now <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div style="background:#fff; border-radius:12px; padding:32px 24px; text-align:center; box-shadow:0 4px 20px rgba(0,0,0,0.07); border-top:4px solid #1a2942; height:100%; transition: transform 0.2s;"
+                     onmouseover="this.style.transform='translateY(-6px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <img src="/Content/images/favicon.png" style="width:64px; height:64px; margin-bottom:16px;" alt="icon" />
+                    <h5 style="color:#1a2942; font-weight:700; margin-bottom:10px;">Speech-Language Therapy</h5>
+                    <p style="color:#888; font-size:14px; line-height:1.7;">Improve communication, swallowing, and cognitive-linguistic skills with evidence-based speech therapy programs.</p>
+                    <a href="/UserAccount/BookAppointment" style="color:#0cb8b6; font-weight:600; font-size:13px; text-decoration:none;">
+                        Book Now <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section style="padding: 70px 0; background:#fff;">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <img src="~/Content/images/about/1.jpg" alt="About RehabCare" style="width:100%; border-radius:12px; box-shadow:0 10px 40px rgba(0,0,0,0.12);" />
+            </div>
+            <div class="col-lg-6 pl-lg-5">
+                <p style="color:#0cb8b6; font-weight:600; letter-spacing:2px; text-transform:uppercase; font-size:13px; margin-bottom:12px;">Who We Are</p>
+                <h2 style="font-size:34px; font-weight:800; color:#1a2942; margin-bottom:20px;">We Care For Your <span style="color:#0cb8b6;">Recovery</span></h2>
+                <p style="color:#666; font-size:15px; line-height:1.8; margin-bottom:20px;">
+                    RehabCare Hospital is a leading rehabilitation center in the Philippines, dedicated to providing world-class therapy services that help patients regain their independence and improve their quality of life.
+                </p>
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <div style="display:flex; align-items:flex-start; margin-bottom:16px;">
+                            <i class="fas fa-check-circle" style="color:#0cb8b6; font-size:18px; margin-right:10px; margin-top:2px;"></i>
+                            <div>
+                                <strong style="color:#1a2942;">Licensed Therapists</strong>
+                                <p style="color:#888; font-size:13px; margin:0;">All staff are PRC licensed</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div style="display:flex; align-items:flex-start; margin-bottom:16px;">
+                            <i class="fas fa-check-circle" style="color:#0cb8b6; font-size:18px; margin-right:10px; margin-top:2px;"></i>
+                            <div>
+                                <strong style="color:#1a2942;">Modern Facilities</strong>
+                                <p style="color:#888; font-size:13px; margin:0;">State of the art equipment</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div style="display:flex; align-items:flex-start;">
+                            <i class="fas fa-check-circle" style="color:#0cb8b6; font-size:18px; margin-right:10px; margin-top:2px;"></i>
+                            <div>
+                                <strong style="color:#1a2942;">Personalized Care</strong>
+                                <p style="color:#888; font-size:13px; margin:0;">Tailored therapy programs</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div style="display:flex; align-items:flex-start;">
+                            <i class="fas fa-check-circle" style="color:#0cb8b6; font-size:18px; margin-right:10px; margin-top:2px;"></i>
+                            <div>
+                                <strong style="color:#1a2942;">Easy Booking</strong>
+                                <p style="color:#888; font-size:13px; margin:0;">Book online anytime</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="/UserAccount/BookAppointment" class="btn-style-one" style="padding:12px 28px;">
+                    <i class="fas fa-calendar-check"></i> Book an Appointment
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section style="padding: 70px 0; background:#1a2942;">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 style="font-size:34px; font-weight:800; color:#fff;">Your Recovery Journey</h2>
+            <p style="color:#aaa; max-width:500px; margin:0 auto;">Watch how our rehabilitation process works and how our therapists guide patients to full recovery.</p>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div style="border-radius:12px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.4); position:relative; background:#000;">
+                 
+                    <video autoplay muted loop controls style="width:100%; display:block;">
+                        <source src="~/Content/videos/rehab.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section style="padding: 70px 0; background:#f0f4f8;">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 style="font-size:34px; font-weight:800; color:#1a2942;">How to Book an Appointment</h2>
+        </div>
+        <div class="row text-center">
+            <div class="col-md-3 mb-4">
+                <div style="width:60px; height:60px; border-radius:50%; background:#0cb8b6; display:inline-flex; align-items:center; justify-content:center; margin-bottom:16px;">
+                    <span style="color:#fff; font-size:22px; font-weight:800;">1</span>
+                </div>
+                <h5 style="color:#1a2942; font-weight:700;">Create Account</h5>
+                <p style="color:#888; font-size:14px;">Register for a free account to get started with our booking system.</p>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div style="width:60px; height:60px; border-radius:50%; background:#1a2942; display:inline-flex; align-items:center; justify-content:center; margin-bottom:16px;">
+                    <span style="color:#fff; font-size:22px; font-weight:800;">2</span>
+                </div>
+                <h5 style="color:#1a2942; font-weight:700;">Choose a Service</h5>
+                <p style="color:#888; font-size:14px;">Select the therapy service that best fits your needs and condition.</p>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div style="width:60px; height:60px; border-radius:50%; background:#0cb8b6; display:inline-flex; align-items:center; justify-content:center; margin-bottom:16px;">
+                    <span style="color:#fff; font-size:22px; font-weight:800;">3</span>
+                </div>
+                <h5 style="color:#1a2942; font-weight:700;">Pick a Schedule</h5>
+                <p style="color:#888; font-size:14px;">Choose your preferred date and time from available therapist slots.</p>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div style="width:60px; height:60px; border-radius:50%; background:#1a2942; display:inline-flex; align-items:center; justify-content:center; margin-bottom:16px;">
+                    <span style="color:#fff; font-size:22px; font-weight:800;">4</span>
+                </div>
+                <h5 style="color:#1a2942; font-weight:700;">Attend Session</h5>
+                <p style="color:#888; font-size:14px;">Come in for your session and begin your recovery journey with us.</p>
+            </div>
+        </div>
+        <div class="text-center mt-3">
+            <a href="/UserAccount/BookAppointment" class="btn-style-one" style="padding:14px 40px; font-size:15px;">
+                <i class="fas fa-calendar-check"></i> Get Started Now
+            </a>
+        </div>
+    </div>
+</section>

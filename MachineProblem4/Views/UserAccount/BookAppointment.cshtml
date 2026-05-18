@@ -1,0 +1,251 @@
+﻿@{
+    Layout = "~/Views/Shared/_UserAccount.cshtml";
+    ViewBag.Title = "Book Appointment";
+}
+
+<section class="page-title text-center" style="background-image:url(/Content/images/background/appoinment.jpg); padding: 60px 0;">
+    <div class="container">
+        <div class="title-text">
+            <h1>Book Appointment</h1>
+        </div>
+    </div>
+</section>
+
+<section class="section pb-70" style="padding-top: 60px;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10">
+                <div class="contact-area style-two" style="box-shadow: 0 4px 24px rgba(0,0,0,0.10); border-radius: 8px; padding: 40px;" ng-controller="UserAccountController" ng-init="loadAppointments()">
+
+                    <div class="section-title text-center mb-4">
+                        <h3>Book an Appointment</h3>
+                        <p>Fill in the details below to request a therapy session.</p>
+                    </div>
+
+                    <div class="text-center mb-3" ng-show="showApptSuccess">
+                        <div class="alert" style="background-color:#e8f5e9; border:1px solid #a5d6a7; border-radius:4px; padding:12px;">
+                            <i class="fas fa-check-circle" style="color:#388e3c;"></i>
+                            <strong style="color:#388e3c;"> Appointment submitted successfully!</strong>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+                            <label>First Name <span style="color:#e53935;">*</span></label>
+                            <div style="position:relative;">
+                                <i class="fas fa-user" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; z-index:1;"></i>
+                                <input type="text" class="form-control" style="padding-left:36px;"
+                                       ng-model="ApptFName"
+                                       ng-change="validateApptFName()"
+                                       ng-readonly="isLoggedIn"
+                                       ng-style="{'background': isLoggedIn ? '#f5f5f5' : '#fff'}"
+                                       placeholder="Enter first name"
+                                       maxlength="50" />
+                            </div>
+                            <small style="color:#e53935;" ng-show="apptErrors.ApptFName">{{apptErrors.ApptFName}}</small>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label>Last Name <span style="color:#e53935;">*</span></label>
+                            <div style="position:relative;">
+                                <i class="fas fa-user" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; z-index:1;"></i>
+                                <input type="text" class="form-control" style="padding-left:36px;"
+                                       ng-model="ApptLName"
+                                       ng-change="validateApptLName()"
+                                       ng-readonly="isLoggedIn"
+                                       ng-style="{'background': isLoggedIn ? '#f5f5f5' : '#fff'}"
+                                       placeholder="Enter last name"
+                                       maxlength="50" />
+                            </div>
+                            <small style="color:#e53935;" ng-show="apptErrors.ApptLName">{{apptErrors.ApptLName}}</small>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label>Date of Birth <span style="color:#e53935;">*</span></label>
+                            <div style="position:relative;">
+                                <i class="fas fa-calendar-alt" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; z-index:1;"></i>
+                                <input type="date" class="form-control" style="padding-left:36px;"
+                                       ng-model="ApptDOB"
+                                       ng-change="validateApptDOB()"
+                                       ng-readonly="isLoggedIn"
+                                       ng-style="{'background': isLoggedIn ? '#f5f5f5' : '#fff'}"
+                                       max="{{maxDate}}" />
+                            </div>
+                            <small style="color:#e53935;" ng-show="apptErrors.ApptDOB">{{apptErrors.ApptDOB}}</small>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label>Sex <span style="color:#e53935;">*</span></label>
+                            <div style="position:relative;">
+                                <i class="fas fa-venus-mars" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; z-index:1;"></i>
+                                
+                                <input ng-if="isLoggedIn"
+                                       type="text" class="form-control" style="padding-left:36px; background:#f5f5f5;"
+                                       ng-model="ApptSex" readonly />
+
+                                <select ng-if="!isLoggedIn"
+                                        class="form-control" style="padding-left:36px; appearance:none; -webkit-appearance:none;"
+                                        ng-model="ApptSex"
+                                        ng-change="validateApptSex()">
+                                    <option value="">-- Select Sex --</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Prefer not to say</option>
+                                </select>
+                                <i class="fas fa-chevron-down" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; pointer-events:none;"></i>
+                            </div>
+                            <small style="color:#e53935;" ng-show="apptErrors.ApptSex">{{apptErrors.ApptSex}}</small>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label>Contact Number <span style="color:#e53935;">*</span></label>
+                            <div style="position:relative;">
+                                <i class="fas fa-phone" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; z-index:1;"></i>
+                                <input type="text" class="form-control" style="padding-left:36px;"
+                                       ng-model="ApptContact"
+                                       ng-change="validateApptContact()"
+                                       ng-readonly="isLoggedIn"
+                                       ng-style="{'background': isLoggedIn ? '#f5f5f5' : '#fff'}"
+                                       placeholder="e.g. 09171234567"
+                                       maxlength="11"
+                                       ng-keypress="allowNumbersOnly($event)" />
+                            </div>
+                            <small style="color:#e53935;" ng-show="apptErrors.ApptContact">{{apptErrors.ApptContact}}</small>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label>Home Address <span style="color:#e53935;">*</span></label>
+                            <div style="position:relative;">
+                                <i class="fas fa-map-marker-alt" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; z-index:1;"></i>
+                                <input type="text" class="form-control" style="padding-left:36px;"
+                                       ng-model="ApptAddress"
+                                       ng-change="validateApptAddress()"
+                                       ng-readonly="isLoggedIn"
+                                       ng-style="{'background': isLoggedIn ? '#f5f5f5' : '#fff'}"
+                                       placeholder="Street, Barangay, City"
+                                       maxlength="100" />
+                            </div>
+                            <small style="color:#e53935;" ng-show="apptErrors.ApptAddress">{{apptErrors.ApptAddress}}</small>
+                        </div>
+
+                        
+                        <div class="col-md-6 mb-3">
+                            <label>Therapy Type <span style="color:#e53935;">*</span></label>
+                            <div style="position:relative;">
+                                <i class="fas fa-hand-holding-medical" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; z-index:1;"></i>
+                                <select class="form-control" style="padding-left:36px; appearance:none; -webkit-appearance:none;"
+                                        ng-model="ApptTherapy"
+                                        ng-change="validateApptTherapy(); updateTherapyFee()">
+                                    <option value="">-- Select Therapy --</option>
+                                    <option value="Physical Therapy">Physical Therapy</option>
+                                    <option value="Occupational Therapy">Occupational Therapy</option>
+                                    <option value="Respiratory Therapy">Respiratory Therapy</option>
+                                    <option value="Speech-Language Therapy">Speech-Language Therapy</option>
+                                </select>
+                                <i class="fas fa-chevron-down" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; pointer-events:none;"></i>
+                            </div>
+                            <small style="color:#e53935;" ng-show="apptErrors.ApptTherapy">{{apptErrors.ApptTherapy}}</small>
+                            
+                            <div ng-if="ApptTherapyFee" style="margin-top:8px; padding:12px 14px; background:#f0fbfb; border-left:3px solid #0cb8b6; border-radius:4px;">
+                                <span style="font-size:12px; color:#888;">Check-up Fee:</span>
+                                <span style="font-size:15px; font-weight:700; color:#0cb8b6; margin-left:8px;">₱{{ApptTherapyFee | number:0}}</span>
+                                <div style="margin-top:10px; padding:10px 12px; background:#fff; border:1px dashed #0cb8b6; border-radius:6px;">
+                                    <div style="font-size:11px; font-weight:700; color:#1a2942; margin-bottom:4px; text-transform:uppercase; letter-spacing:.4px;">
+                                        <i class="fas fa-mobile-alt" style="color:#0cb8b6; margin-right:4px;"></i> GCash Payment Instructions
+                                    </div>
+                                    <div style="font-size:12px; color:#444; line-height:1.7;">
+                                        Send to: <strong style="color:#0cb8b6;">0917-123-4567</strong><br>
+                                        Account Name: <strong>RehabCare Clinic</strong><br>
+                                        Amount: <strong>₱{{ApptTherapyFee | number:0}}</strong>
+                                    </div>
+                                    <div style="font-size:11px; color:#aaa; margin-top:6px;">
+                                        <i class="fas fa-info-circle"></i> Screenshot your GCash receipt and upload it below.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label>Preferred Date <span style="color:#e53935;">*</span></label>
+                            <div style="position:relative;">
+                                <i class="fas fa-calendar-day" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; z-index:1;"></i>
+                                <input type="date" class="form-control" style="padding-left:36px;"
+                                       ng-model="ApptDate"
+                                       ng-change="validateApptDate()"
+                                       min="{{minApptDate}}" />
+                            </div>
+                            <small style="color:#e53935;" ng-show="apptErrors.ApptDate">{{apptErrors.ApptDate}}</small>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label>Preferred Time <span style="color:#e53935;">*</span></label>
+                            <div style="position:relative;">
+                                <i class="fas fa-clock" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; z-index:1;"></i>
+                                <select class="form-control" style="padding-left:36px; appearance:none; -webkit-appearance:none;"
+                                        ng-model="ApptTime"
+                                        ng-change="validateApptTime()">
+                                    <option value="">-- Select Time --</option>
+                                    <option value="8:00 AM">8:00 AM</option>
+                                    <option value="9:00 AM">9:00 AM</option>
+                                    <option value="10:00 AM">10:00 AM</option>
+                                    <option value="11:00 AM">11:00 AM</option>
+                                    <option value="1:00 PM">1:00 PM</option>
+                                    <option value="2:00 PM">2:00 PM</option>
+                                    <option value="3:00 PM">3:00 PM</option>
+                                    <option value="4:00 PM">4:00 PM</option>
+                                </select>
+                                <i class="fas fa-chevron-down" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; pointer-events:none;"></i>
+                            </div>
+                            <small style="color:#e53935;" ng-show="apptErrors.ApptTime">{{apptErrors.ApptTime}}</small>
+                        </div>
+
+                        <div class="col-md-12 mb-3" ng-if="ApptTherapyFee">
+                            <label>Payment Receipt <span style="color:#e53935;">*</span></label>
+                            <div style="border:2px dashed #0cb8b6; border-radius:8px; padding:18px; text-align:center; background:#f9fefe; cursor:pointer; position:relative;"
+                                 ng-click="triggerReceiptUpload()"
+                                 ng-style="{'border-color': apptErrors.ApptReceipt ? '#e53935' : '#0cb8b6'}">
+                                <input type="file" id="receiptFileInput" accept="image/*"
+                                       style="display:none;"
+                                       onchange="angular.element(this).scope().onReceiptSelected(this)" />
+                                
+                                <div ng-if="ApptReceiptPreview">
+                                    <img ng-src="{{ApptReceiptPreview}}" style="max-height:160px; max-width:100%; border-radius:6px; margin-bottom:8px;" />
+                                    <div style="font-size:12px; color:#0cb8b6; font-weight:600;">
+                                        <i class="fas fa-check-circle"></i> Receipt uploaded — click to replace
+                                    </div>
+                                </div>
+                                <div ng-if="!ApptReceiptPreview">
+                                    <i class="fas fa-cloud-upload-alt" style="font-size:28px; color:#0cb8b6; margin-bottom:8px; display:block;"></i>
+                                    <div style="font-size:13px; font-weight:600; color:#555;">Click to upload receipt</div>
+                                    <div style="font-size:11px; color:#aaa; margin-top:4px;">JPG, PNG — max 5MB</div>
+                                </div>
+                            </div>
+                            <small style="color:#e53935;" ng-show="apptErrors.ApptReceipt">{{apptErrors.ApptReceipt}}</small>
+                        </div>
+
+                        <div class="col-md-12 mb-3" ng-if="ApptTherapyFee">
+                            <div style="background:#1a2942; color:#fff; border-radius:8px; padding:14px 18px; display:flex; justify-content:space-between; align-items:center;">
+                                <span style="font-size:13px; opacity:.8;">Total Amount Due</span>
+                                <span style="font-size:22px; font-weight:800; color:#0cb8b6;">₱{{ApptTherapyFee | number:0}}</span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <button type="button" class="btn-style-one" style="width:100%; text-align:center;" ng-click="addApptFunc()" ng-disabled="isSubmittingAppt">
+                                <i class="fas fa-calendar-plus"></i> {{isSubmittingAppt ? 'Submitting...' : 'Submit Appointment'}}
+                            </button>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <button type="button" class="btn-style-one" style="width:100%; text-align:center; background:#6c757d;" ng-click="cancelApptFunc()">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

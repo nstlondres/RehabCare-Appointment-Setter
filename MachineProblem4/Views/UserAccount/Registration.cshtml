@@ -1,0 +1,228 @@
+﻿@{
+    Layout = "~/Views/Shared/_UserAccount.cshtml";
+    ViewBag.Title = "Registration";
+}
+
+<section class="page-title text-center" style="background-image:url(/Content/images/background/3.jpg); padding: 60px 0;">
+    <div class="container">
+        <div class="title-text">
+            <h1>Registration</h1>
+        </div>
+    </div>
+</section>
+
+<section class="section pb-70" style="padding-top: 60px;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10">
+                <div class="contact-area style-two" style="box-shadow: 0 4px 24px rgba(0,0,0,0.10); border-radius: 8px; padding: 40px;" ng-controller="UserAccountController" ng-init="loadRegistration()">
+
+                    <div class="section-title text-center mb-4">
+                        <h3>Create Account</h3>
+                        <p>Fill in the details below to register a new user account.</p>
+                    </div>
+
+                    <!-- Success Banner -->
+                    <div class="text-center mb-3" ng-show="showLogin">
+                        <div class="alert" style="background-color:#e8f5e9; border:1px solid #a5d6a7; border-radius:4px; padding:12px;">
+                            <i class="fas fa-check-circle" style="color:#388e3c;"></i>
+                            <strong style="color:#388e3c;"> Registration successful!</strong>
+                        </div>
+                        <a class="btn-style-one mt-3" ng-click="redirectFunc('login')" style="cursor:pointer; display:inline-block;">
+                            <i class="fas fa-sign-in-alt"></i> Go to Login
+                        </a>
+                    </div>
+
+                    <div class="row">
+
+                        <!-- First Name -->
+                        <div class="col-md-4 mb-3">
+                            <label>First Name <span style="color:#e53935;">*</span></label>
+                            <div style="position:relative;">
+                                <i class="fas fa-user" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; z-index:1;"></i>
+                                <input type="text" class="form-control" style="padding-left:36px;"
+                                       ng-model="FName"
+                                       ng-keypress="blockNameNumberInput($event)"
+                                       ng-change="validateFName()"
+                                       placeholder="Enter first name"
+                                       maxlength="50" />
+                            </div>
+                            <small style="color:#e53935;" ng-show="errors.FName">{{errors.FName}}</small>
+                        </div>
+
+                        <!-- Middle Name -->
+                        <div class="col-md-4 mb-3">
+                            <label>Middle Name <span style="color:#aaa; font-size:11px;">(optional)</span></label>
+                            <div style="position:relative;">
+                                <i class="fas fa-user" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; z-index:1;"></i>
+                                <input type="text" class="form-control" style="padding-left:36px;"
+                                       ng-model="MName"
+                                       ng-keypress="blockNameNumberInput($event)"
+                                       ng-change="sanitizeNameInput('MName')"
+                                       placeholder="Enter middle name"
+                                       maxlength="50" />
+                            </div>
+                        </div>
+
+                        <!-- Last Name -->
+                        <div class="col-md-4 mb-3">
+                            <label>Last Name <span style="color:#e53935;">*</span></label>
+                            <div style="position:relative;">
+                                <i class="fas fa-user" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; z-index:1;"></i>
+                                <input type="text" class="form-control" style="padding-left:36px;"
+                                       ng-model="LName"
+                                       ng-keypress="blockNameNumberInput($event)"
+                                       ng-change="validateLName()"
+                                       placeholder="Enter last name"
+                                       maxlength="50" />
+                            </div>
+                            <small style="color:#e53935;" ng-show="errors.LName">{{errors.LName}}</small>
+                        </div>
+
+                        <!-- Birth Date -->
+                        <div class="col-md-6 mb-3">
+                            <label>Birth Date <span style="color:#e53935;">*</span></label>
+                            <div style="position:relative;">
+                                <i class="fas fa-calendar-alt" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; z-index:1;"></i>
+                                <input type="date" class="form-control" style="padding-left:36px;"
+                                       ng-model="BirthDate"
+                                       ng-change="validateBirthDate()"
+                                       max="{{maxDate}}" />
+                            </div>
+                            <small style="color:#e53935;" ng-show="errors.BirthDate">{{errors.BirthDate}}</small>
+                        </div>
+
+                        <!-- Gender -->
+                        <div class="col-md-6 mb-3">
+                            <label>Gender <span style="color:#e53935;">*</span></label>
+                            <div style="position:relative;">
+                                <i class="fas fa-venus-mars" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; z-index:1;"></i>
+                                <select class="form-control" style="padding-left:36px; appearance:none; -webkit-appearance:none;"
+                                        ng-model="Gender"
+                                        ng-change="validateGender()">
+                                    <option value="">-- Select Gender --</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Non-binary">Non-binary</option>
+                                    <option value="Prefer not to say">Prefer not to say</option>
+                                </select>
+                                <i class="fas fa-chevron-down" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; pointer-events:none;"></i>
+                            </div>
+                            <small style="color:#e53935;" ng-show="errors.Gender">{{errors.Gender}}</small>
+                        </div>
+
+                        <!-- Phone Number -->
+                        <div class="col-md-6 mb-3">
+                            <label>Phone Number <span style="color:#e53935;">*</span></label>
+                            <div style="position:relative;">
+                                <i class="fas fa-phone" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; z-index:1;"></i>
+                                <input type="text" class="form-control" style="padding-left:36px;"
+                                       ng-model="Phone"
+                                       ng-change="validatePhone()"
+                                       placeholder="e.g. 09171234567"
+                                       maxlength="11"
+                                       ng-keypress="allowNumbersOnly($event)" />
+                            </div>
+                            <small style="color:#e53935;" ng-show="errors.Phone">{{errors.Phone}}</small>
+                        </div>
+
+                        <!-- Home Address -->
+                        <div class="col-md-6 mb-3">
+                            <label>Home Address <span style="color:#e53935;">*</span></label>
+                            <div style="position:relative;">
+                                <i class="fas fa-map-marker-alt" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; z-index:1;"></i>
+                                <input type="text" class="form-control" style="padding-left:36px;"
+                                       ng-model="Address"
+                                       ng-change="validateAddress()"
+                                       placeholder="Enter home address"
+                                       maxlength="100" />
+                            </div>
+                            <small style="color:#e53935;" ng-show="errors.Address">{{errors.Address}}</small>
+                        </div>
+
+                        <!-- Username -->
+                        <div class="col-md-6 mb-3">
+                            <label>Username <span style="color:#e53935;">*</span></label>
+                            <div style="position:relative;">
+                                <i class="fas fa-id-card" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; z-index:1;"></i>
+                                <input type="text" class="form-control" style="padding-left:36px;"
+                                       ng-model="Username"
+                                       ng-change="validateUsername()"
+                                       placeholder="Choose a username"
+                                       maxlength="20" />
+                            </div>
+                            <small style="color:#e53935;" ng-show="errors.Username">{{errors.Username}}</small>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="col-md-6 mb-3">
+                            <label>Password <span style="color:#e53935;">*</span></label>
+                            <div style="position:relative;">
+                                <i class="fas fa-lock" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; z-index:1;"></i>
+                                <input type="password" class="form-control" style="padding-left:36px;"
+                                       ng-model="Password"
+                                       ng-change="validatePassword()"
+                                       placeholder="Min 8 chars, upper/lower/number/symbol" />
+                            </div>
+                            <!-- Password strength checklist -->
+                            <div ng-show="Password.length > 0" style="margin-top:6px;">
+                                <small ng-class="pwChecks.length ? 'text-success' : 'text-danger'">
+                                    <i ng-class="pwChecks.length ? 'fas fa-check-circle' : 'fas fa-times-circle'"></i> At least 8 characters
+                                </small><br />
+                                <small ng-class="pwChecks.upper ? 'text-success' : 'text-danger'">
+                                    <i ng-class="pwChecks.upper ? 'fas fa-check-circle' : 'fas fa-times-circle'"></i> Uppercase letter (A–Z)
+                                </small><br />
+                                <small ng-class="pwChecks.lower ? 'text-success' : 'text-danger'">
+                                    <i ng-class="pwChecks.lower ? 'fas fa-check-circle' : 'fas fa-times-circle'"></i> Lowercase letter (a–z)
+                                </small><br />
+                                <small ng-class="pwChecks.number ? 'text-success' : 'text-danger'">
+                                    <i ng-class="pwChecks.number ? 'fas fa-check-circle' : 'fas fa-times-circle'"></i> Number (0–9)
+                                </small><br />
+                                <small ng-class="pwChecks.special ? 'text-success' : 'text-danger'">
+                                    <i ng-class="pwChecks.special ? 'fas fa-check-circle' : 'fas fa-times-circle'"></i> At least 1 special character
+                                </small>
+                            </div>
+                            <small style="color:#e53935;" ng-show="errors.Password">{{errors.Password}}</small>
+                        </div>
+
+                        <!-- Confirm Password -->
+                        <div class="col-md-6 mb-3">
+                            <label>Confirm Password <span style="color:#e53935;">*</span></label>
+                            <div style="position:relative;">
+                                <i class="fas fa-lock" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; z-index:1;"></i>
+                                <input type="password" class="form-control" style="padding-left:36px;"
+                                       ng-model="ConfirmPassword"
+                                       ng-change="validateConfirmPassword()"
+                                       placeholder="Re-enter your password" />
+                            </div>
+                            <small style="color:#e53935;" ng-show="errors.ConfirmPassword">{{errors.ConfirmPassword}}</small>
+                            <small class="text-success" ng-show="ConfirmPassword.length > 0 && !errors.ConfirmPassword">
+                                <i class="fas fa-check-circle"></i> Passwords match
+                            </small>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="col-md-6 mb-3">
+                            <button type="button" class="btn-style-one" style="width:100%; text-align:center;" ng-click="addFunc()">
+                                <i class="fas fa-user-plus"></i> Register
+                            </button>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <button type="button" class="btn-style-one" style="width:100%; text-align:center; background:#6c757d;" ng-click="cancelFunc()">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-2">
+                        <p>
+                            Already have an account?
+                            <a ng-click="redirectFunc('login')" style="color:#0cb8b6; cursor:pointer; font-weight:600;">Login here</a>
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,311 @@
+﻿@{
+    Layout = "~/Views/Shared/_UserAccount.cshtml";
+    ViewBag.Title = "Dashboard";
+}
+
+<style>
+    .rc-wrapper {
+        display: flex;
+        align-items: flex-start;
+    }
+
+    .rc-sidebar {
+        width: 200px;
+        flex-shrink: 0;
+        background: #fff;
+        box-shadow: 2px 0 8px rgba(0,0,0,0.06);
+        padding: 14px 0;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
+    }
+
+    .rc-sidebar-nav a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 20px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #666;
+        text-decoration: none;
+        border-left: 3px solid transparent;
+        transition: all 0.15s;
+    }
+
+        .rc-sidebar-nav a i {
+            font-size: 14px;
+            width: 18px;
+            text-align: center;
+            color: #bbb;
+        }
+
+        .rc-sidebar-nav a:hover {
+            background: #f0fbfb;
+            color: #0cb8b6;
+            border-left-color: #0cb8b6;
+            text-decoration: none;
+        }
+
+            .rc-sidebar-nav a:hover i {
+                color: #0cb8b6;
+            }
+
+        .rc-sidebar-nav a.rc-active {
+            background: #e8f9f9;
+            color: #0cb8b6;
+            border-left-color: #0cb8b6;
+            font-weight: 700;
+        }
+
+            .rc-sidebar-nav a.rc-active i {
+                color: #0cb8b6;
+            }
+
+    .rc-content {
+        flex: 1;
+        padding: 32px 28px 48px;
+        min-width: 0;
+    }
+
+    .rc-dashboard-card {
+        box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+        border-radius: 12px;
+        padding: 22px 22px 18px;
+    }
+
+    .rc-card-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-top: 6px;
+    }
+
+    .rc-card-caption {
+        font-size: 12px;
+        color: #aaa;
+        min-width: 0;
+    }
+
+    .rc-card-view {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        flex: 0 0 auto;
+        min-height: 34px;
+        padding: 0 14px;
+        font-size: 12px;
+        line-height: 1;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+        .rc-card-view i {
+            line-height: 1;
+        }
+</style>
+
+<div class="rc-wrapper">
+
+    <div class="rc-sidebar">
+        <nav class="rc-sidebar-nav">
+            <a href="/UserAccount/Dashboard" class="rc-active"><i class="fas fa-th-large"></i> Dashboard</a>
+            <a href="/UserAccount/AppointmentManagement"><i class="fas fa-calendar-plus"></i> Appointments</a>
+            <a href="/UserAccount/Patients"><i class="fas fa-users"></i> Patients</a>
+            <a href="/UserAccount/Therapists"><i class="fas fa-user-md"></i> Therapists</a>
+            <a href="/UserAccount/Payment"><i class="fas fa-credit-card"></i> Payment</a>
+        </nav>
+    </div>
+
+    <div class="rc-content" ng-controller="UserAccountController" ng-init="loadDashboard()">
+
+        <div style="margin-bottom:24px;">
+            <h2 style="font-size:22px; font-weight:800; color:#1a2942; margin:0;">Dashboard</h2>
+            <p style="font-size:13px; color:#aaa; margin:2px 0 0;">Welcome back, Admin</p>
+        </div>
+
+        <div class="row">
+
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="contact-area style-two rc-dashboard-card" style="border-top:4px solid #0cb8b6 !important;">
+                    <div style="font-size:12px; color:#aaa; font-weight:600; text-transform:uppercase; letter-spacing:.5px; margin-bottom:10px;">
+                        <i class="fas fa-users" style="color:#0cb8b6; margin-right:6px;"></i> Total Patients
+                    </div>
+                    <div style="font-size:32px; font-weight:800; color:#1a2942; line-height:1; margin-bottom:6px;">{{dashboardStats.totalPatients}}</div>
+                    <div class="rc-card-footer">
+                        <div class="rc-card-caption">Registered in the system</div>
+                        <a href="/UserAccount/Patients" class="btn-style-one rc-card-view">
+                            <i class="fas fa-eye"></i> View
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="contact-area style-two rc-dashboard-card" style="border-top:4px solid #1a2942 !important;">
+                    <div style="font-size:12px; color:#aaa; font-weight:600; text-transform:uppercase; letter-spacing:.5px; margin-bottom:10px;">
+                        <i class="fas fa-calendar-alt" style="color:#1a2942; margin-right:6px;"></i> Total Appointments
+                    </div>
+                    <div style="font-size:32px; font-weight:800; color:#1a2942; line-height:1; margin-bottom:6px;">{{dashboardStats.totalAppointments}}</div>
+                    <div class="rc-card-footer">
+                        <div class="rc-card-caption">All submitted appointments</div>
+                        <a href="/UserAccount/AppointmentManagement" class="btn-style-one rc-card-view" style="background:#1a2942;">
+                            <i class="fas fa-eye"></i> View
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="contact-area style-two rc-dashboard-card" style="border-top:4px solid #28a745 !important;">
+                    <div style="font-size:12px; color:#aaa; font-weight:600; text-transform:uppercase; letter-spacing:.5px; margin-bottom:10px;">
+                        <i class="fas fa-calendar-day" style="color:#28a745; margin-right:6px;"></i> Today's Appointments
+                    </div>
+                    <div style="font-size:32px; font-weight:800; color:#1a2942; line-height:1; margin-bottom:6px;">{{dashboardStats.todaysAppointments}}</div>
+                    <div class="rc-card-footer">
+                        <div class="rc-card-caption">Scheduled for today</div>
+                        <a href="/UserAccount/AppointmentManagement" class="btn-style-one rc-card-view" style="background:#28a745;">
+                            <i class="fas fa-eye"></i> View
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="contact-area style-two rc-dashboard-card" style="border-top:4px solid #f59e0b !important;">
+                    <div style="font-size:12px; color:#aaa; font-weight:600; text-transform:uppercase; letter-spacing:.5px; margin-bottom:10px;">
+                        <i class="fas fa-user-md" style="color:#f59e0b; margin-right:6px;"></i> Available Therapists
+                    </div>
+                    <div style="font-size:32px; font-weight:800; color:#1a2942; line-height:1; margin-bottom:6px;">{{dashboardStats.availableTherapists}}</div>
+                    <div class="rc-card-footer">
+                        <div class="rc-card-caption">
+                            {{dashboardStats.availableTherapists === 0 ? 'No therapists available yet' : 'Marked as available'}}
+                        </div>
+                        <a href="/UserAccount/Therapists" class="btn-style-one rc-card-view" style="background:#f59e0b;">
+                            <i class="fas fa-eye"></i> View
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row align-items-start">
+
+            <div class="col-lg-8">
+
+                <div style="font-size:14px; font-weight:700; color:#1a2942; margin-bottom:12px; margin-top:4px;">
+                    <i class="fas fa-credit-card" style="color:#0cb8b6; margin-right:6px;"></i> Payment Overview
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col-md-4 mb-4">
+                        <div class="contact-area style-two rc-dashboard-card" style="border-top:4px solid #0cb8b6 !important;">
+                            <div style="font-size:12px; color:#aaa; font-weight:600; text-transform:uppercase; letter-spacing:.5px; margin-bottom:10px;">
+                                <i class="fas fa-file-invoice" style="color:#0cb8b6; margin-right:6px;"></i> Pending Review
+                            </div>
+                            <div style="font-size:32px; font-weight:800; color:#1a2942; line-height:1; margin-bottom:6px;">{{dashboardStats.pendingReview}}</div>
+                            <div class="rc-card-footer">
+                                <div class="rc-card-caption">Receipts awaiting approval</div>
+                                <a href="/UserAccount/Payment" class="btn-style-one rc-card-view">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="contact-area style-two rc-dashboard-card" style="border-top:4px solid #28a745 !important;">
+                            <div style="font-size:12px; color:#aaa; font-weight:600; text-transform:uppercase; letter-spacing:.5px; margin-bottom:10px;">
+                                <i class="fas fa-check-circle" style="color:#28a745; margin-right:6px;"></i> Approved
+                            </div>
+                            <div style="font-size:32px; font-weight:800; color:#1a2942; line-height:1; margin-bottom:6px;">{{dashboardStats.approvedPayments}}</div>
+                            <div class="rc-card-footer">
+                                <div class="rc-card-caption">Payments verified</div>
+                                <a href="/UserAccount/Payment" class="btn-style-one rc-card-view" style="background:#28a745;">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <div class="contact-area style-two" style="box-shadow:0 4px 24px rgba(0,0,0,0.08); border-radius:12px; padding:24px 24px 20px; border-top:4px solid #0cb8b6 !important;">
+                        <div style="font-size:15px; font-weight:700; color:#1a2942; margin-bottom:2px;">Appointments by Therapy Type</div>
+                        <div style="font-size:12px; color:#aaa; margin-bottom:18px;">Breakdown per therapy service</div>
+                        <canvas id="therapyChart" height="110"></canvas>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-lg-4">
+                <div style="font-size:14px; font-weight:700; color:#1a2942; margin-bottom:12px; margin-top:4px;">&nbsp;</div>
+                <div class="contact-area style-two" style="box-shadow:0 4px 24px rgba(0,0,0,0.08); border-radius:12px; padding:24px 24px 20px; border-top:4px solid #1a2942 !important;">
+                    <div style="font-size:15px; font-weight:700; color:#1a2942; margin-bottom:2px;">Appointment Status</div>
+                    <div style="font-size:12px; color:#aaa; margin-bottom:18px;">Pending, Accepted, Declined</div>
+                    <canvas id="statusChart" height="280"></canvas>
+                </div>
+            </div>
+
+        </div>
+
+        <div style="font-size:14px; font-weight:700; color:#1a2942; margin-bottom:12px; margin-top:4px;">
+            <i class="fas fa-chart-line" style="color:#0cb8b6; margin-right:6px;"></i> Revenue Per Week
+        </div>
+        <div class="row">
+            <div class="col-12 mb-4">
+                <div class="contact-area style-two" style="box-shadow:0 4px 24px rgba(0,0,0,0.08); border-radius:12px; padding:24px 24px 20px; border-top:4px solid #28a745 !important;">
+                    <div style="font-size:15px; font-weight:700; color:#1a2942; margin-bottom:2px;">Weekly Revenue (Approved Payments)</div>
+                    <div style="font-size:12px; color:#aaa; margin-bottom:18px;">Total approved payment revenue per week - last 8 weeks</div>
+                    <canvas id="salesWeekChart" height="70"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div style="font-size:14px; font-weight:700; color:#1a2942; margin-bottom:12px; margin-top:4px;">
+            <i class="fas fa-table" style="color:#0cb8b6; margin-right:6px;"></i> Chart Data Summary
+        </div>
+        <div class="row">
+            <div class="col-12 mb-4">
+                <div class="contact-area style-two" style="box-shadow:0 4px 24px rgba(0,0,0,0.08); border-radius:12px; padding:24px 24px 20px; border-top:4px solid #0cb8b6 !important;">
+                    <div ng-if="dashboardChartTable.length === 0" class="text-center py-4" style="color:#aaa;">
+                        <i class="fas fa-table" style="font-size:48px; display:block; margin-bottom:10px;"></i>
+                        No chart data available yet.
+                    </div>
+
+                    <div class="table-responsive" ng-if="dashboardChartTable.length > 0">
+                        <table class="table table-hover" style="background:#fff;">
+                            <thead style="background:#0cb8b6; color:#fff;">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Chart</th>
+                                    <th>Label</th>
+                                    <th>Type</th>
+                                    <th style="text-align:right;">Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="row in dashboardChartTable">
+                                    <td>{{$index + 1}}</td>
+                                    <td>{{row.ChartName}}</td>
+                                    <td>{{row.Label}}</td>
+                                    <td>{{row.ValueType}}</td>
+                                    <td style="text-align:right;">{{getDashboardChartValue(row)}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+

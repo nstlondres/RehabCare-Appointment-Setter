@@ -1,0 +1,322 @@
+@{
+    Layout = "~/Views/Shared/_UserAccount.cshtml";
+    ViewBag.Title = "Contact Us";
+}
+
+<style>
+    .contact-page {
+        background: #f6fbfb;
+        padding: 34px 0 52px;
+    }
+
+    .contact-shell {
+        max-width: 1120px;
+        margin: 0 auto;
+    }
+
+    .contact-heading {
+        margin-bottom: 22px;
+    }
+
+    .contact-heading h2 {
+        color: #1a2942;
+        font-size: 28px;
+        font-weight: 800;
+        margin: 0;
+    }
+
+    .contact-heading p {
+        color: #7d8a99;
+        font-size: 14px;
+        margin: 6px 0 0;
+        max-width: 620px;
+    }
+
+    .contact-hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.25fr) minmax(300px, .75fr);
+        gap: 22px;
+        align-items: stretch;
+    }
+
+    .contact-panel {
+        background: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+        border-top: 4px solid #0cb8b6;
+        padding: 28px;
+    }
+
+    .contact-panel.dark {
+        background: #1a2942;
+        border-top-color: #28a745;
+        color: #ffffff;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .contact-panel.dark:before {
+        content: "";
+        position: absolute;
+        inset: auto -40px -58px auto;
+        width: 190px;
+        height: 190px;
+        border-radius: 50%;
+        background: rgba(12,184,182,0.16);
+    }
+
+    .contact-kicker {
+        color: #0cb8b6;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: .6px;
+        margin-bottom: 9px;
+        text-transform: uppercase;
+    }
+
+    .contact-title {
+        color: #1a2942;
+        font-size: 20px;
+        font-weight: 800;
+        margin: 0 0 10px;
+    }
+
+    .contact-summary {
+        color: #7d8a99;
+        font-size: 14px;
+        line-height: 1.7;
+        margin: 0 0 24px;
+    }
+
+    .contact-info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+    }
+
+    .contact-info-item {
+        display: flex;
+        gap: 12px;
+        min-height: 112px;
+        padding: 18px;
+        border: 1px solid #eef3f6;
+        border-radius: 8px;
+        background: #fbfefe;
+    }
+
+    .contact-info-item i {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 38px;
+        width: 38px;
+        height: 38px;
+        border-radius: 8px;
+        color: #ffffff;
+        background: #0cb8b6;
+        font-size: 15px;
+    }
+
+    .contact-info-item h4 {
+        color: #1a2942;
+        font-size: 14px;
+        font-weight: 800;
+        margin: 0 0 5px;
+    }
+
+    .contact-info-item p {
+        color: #7d8a99;
+        font-size: 13px;
+        line-height: 1.5;
+        margin: 0;
+    }
+
+    .clinic-card {
+        position: relative;
+        z-index: 1;
+    }
+
+    .clinic-mark {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 22px;
+    }
+
+    .clinic-mark img {
+        width: 54px;
+        height: 54px;
+        border-radius: 8px;
+        background: #ffffff;
+        padding: 7px;
+    }
+
+    .clinic-mark h3 {
+        color: #ffffff;
+        font-size: 18px;
+        font-weight: 800;
+        margin: 0;
+    }
+
+    .clinic-mark span {
+        color: rgba(255,255,255,0.68);
+        display: block;
+        font-size: 12px;
+        margin-top: 2px;
+    }
+
+    .clinic-hours {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .clinic-hours li {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 13px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.12);
+        color: rgba(255,255,255,0.76);
+        font-size: 13px;
+    }
+
+    .clinic-hours li:last-child {
+        border-bottom: 0;
+    }
+
+    .clinic-hours strong {
+        color: #ffffff;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .contact-note {
+        margin-top: 20px;
+        padding: 15px 16px;
+        border-radius: 8px;
+        background: rgba(255,255,255,0.08);
+        color: rgba(255,255,255,0.78);
+        font-size: 13px;
+        line-height: 1.55;
+    }
+
+    .service-strip {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 22px;
+    }
+
+    .service-chip {
+        background: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+        padding: 16px 14px;
+        border-left: 4px solid #0cb8b6;
+    }
+
+    .service-chip i {
+        color: #0cb8b6;
+        margin-right: 7px;
+    }
+
+    .service-chip span {
+        color: #1a2942;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    @@media (max-width: 991px) {
+        .contact-hero,
+        .service-strip {
+            grid-template-columns: 1fr;
+        }
+
+        .contact-info-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<section class="contact-page">
+    <div class="container contact-shell">
+        <div class="contact-heading">
+            <h2>Contact RehabCare Hospital</h2>
+            <p>Clinic information for visits, inquiries, appointments, and rehabilitation service concerns.</p>
+        </div>
+
+        <div class="contact-hero">
+            <div class="contact-panel">
+                <div class="contact-kicker">Clinic Information</div>
+                <h3 class="contact-title">Rehabilitation care made easy to reach</h3>
+                <p class="contact-summary">
+                    RehabCare Hospital assists patients with therapy schedules, payment verification, and service availability for physical, occupational, respiratory, and speech-language therapy.
+                </p>
+
+                <div class="contact-info-grid">
+                    <div class="contact-info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h4>Clinic Address</h4>
+                            <p>RehabCare Hospital<br />Manila, Philippines</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <div>
+                            <h4>Contact Number</h4>
+                            <p>+63 912 345 6789<br />Available during clinic hours</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Email Address</h4>
+                            <p>rehabcareclinic@gmail.com<br />For general clinic inquiries</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-item">
+                        <i class="fas fa-credit-card"></i>
+                        <div>
+                            <h4>Payment Desk</h4>
+                            <p>Receipts are reviewed by the clinic admin before appointment confirmation.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="contact-panel dark">
+                <div class="clinic-card">
+                    <div class="clinic-mark">
+                        <img src="/Content/images/favicon.png" alt="RehabCare Hospital logo" />
+                        <div>
+                            <h3>RehabCare Hospital</h3>
+                            <span>Rehabilitation Therapy Booking System</span>
+                        </div>
+                    </div>
+
+                    <ul class="clinic-hours">
+                        <li><span>Morning Slots</span><strong>8:00 AM - 11:00 AM</strong></li>
+                        <li><span>Lunch Break</span><strong>12:00 PM - 1:00 PM</strong></li>
+                        <li><span>Afternoon Slots</span><strong>1:00 PM - 4:00 PM</strong></li>
+                    </ul>
+
+                    <div class="contact-note">
+                        Patients are encouraged to arrive at least 15 minutes before their scheduled session for assessment and check-in.
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <div class="service-strip">
+            <div class="service-chip"><i class="fas fa-walking"></i><span>Physical Therapy</span></div>
+            <div class="service-chip"><i class="fas fa-hands"></i><span>Occupational Therapy</span></div>
+            <div class="service-chip"><i class="fas fa-lungs"></i><span>Respiratory Therapy</span></div>
+            <div class="service-chip"><i class="fas fa-comment-medical"></i><span>Speech-Language Therapy</span></div>
+        </div>
+    </div>
+</section>

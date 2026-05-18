@@ -1,0 +1,540 @@
+﻿@{
+    Layout = "~/Views/Shared/_UserAccount.cshtml";
+    ViewBag.Title = "Therapists' Schedule";
+}
+
+<style>
+    .rc-wrapper {
+        display: flex;
+        align-items: flex-start;
+    }
+
+    .rc-sidebar {
+        width: 200px;
+        flex-shrink: 0;
+        background: #fff;
+        box-shadow: 2px 0 8px rgba(0,0,0,0.06);
+        padding: 14px 0;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
+    }
+
+    .rc-sidebar-nav a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 20px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #666;
+        text-decoration: none;
+        border-left: 3px solid transparent;
+        transition: all 0.15s;
+    }
+
+        .rc-sidebar-nav a i {
+            font-size: 14px;
+            width: 18px;
+            text-align: center;
+            color: #bbb;
+        }
+
+        .rc-sidebar-nav a:hover {
+            background: #f0fbfb;
+            color: #0cb8b6;
+            border-left-color: #0cb8b6;
+            text-decoration: none;
+        }
+
+            .rc-sidebar-nav a:hover i {
+                color: #0cb8b6;
+            }
+
+        .rc-sidebar-nav a.rc-active {
+            background: #e8f9f9;
+            color: #0cb8b6;
+            border-left-color: #0cb8b6;
+            font-weight: 700;
+        }
+
+            .rc-sidebar-nav a.rc-active i {
+                color: #0cb8b6;
+            }
+
+    .rc-content {
+        flex: 1;
+        padding: 32px 28px 48px;
+        min-width: 0;
+    }
+
+    .sortable-th {
+        cursor: pointer;
+        user-select: none;
+        white-space: nowrap;
+    }
+
+        .sortable-th:hover {
+            background: #0aa9a7 !important;
+        }
+
+    .sort-icon {
+        margin-left: 4px;
+        font-size: 11px;
+        opacity: 0.7;
+    }
+
+    .pagination-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 18px;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+        .pagination-bar .page-info {
+            font-size: 12px;
+            color: #888;
+        }
+
+    .pagination-btns {
+        display: flex;
+        align-items: center;
+        gap: 0;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        overflow: hidden;
+    }
+
+        .pagination-btns button {
+            border: none;
+            border-right: 1px solid #ddd;
+            background: #fff;
+            color: #555;
+            padding: 6px 12px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s;
+            white-space: nowrap;
+        }
+
+            .pagination-btns button:last-child {
+                border-right: none;
+            }
+
+            .pagination-btns button:hover:not(:disabled):not(.active) {
+                background: #f0fbfb;
+                color: #0cb8b6;
+            }
+
+            .pagination-btns button.active {
+                background: #0cb8b6;
+                color: #fff;
+                font-weight: 600;
+            }
+
+            .pagination-btns button:disabled {
+                opacity: 0.38;
+                cursor: default;
+            }
+
+    .filter-label {
+        font-size: 11px;
+        font-weight: 600;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 6px;
+    }
+
+    .query-section {
+        background: #f8fffe;
+        border: 1px solid #e0f5f5;
+        border-radius: 6px;
+        padding: 14px;
+        margin-bottom: 16px;
+    }
+
+    .day-badge {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 600;
+        margin: 2px;
+        background: #e8f9f9;
+        color: #0cb8b6;
+        border: 1px solid #b2ebf2;
+    }
+
+    .status-available {
+        color: #28a745;
+        font-weight: 600;
+    }
+
+    .status-unavailable {
+        color: #e53935;
+        font-weight: 600;
+    }
+
+    .day-checks {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 4px;
+    }
+
+    .day-pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 5px 14px;
+        border-radius: 16px;
+        font-size: 13px;
+        cursor: pointer;
+        border: 1px solid #ddd;
+        background: #fff;
+        user-select: none;
+        transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+
+        .day-pill:hover {
+            background: #f0fbfb;
+            border-color: #0cb8b6;
+            color: #0cb8b6;
+        }
+
+        .day-pill.selected {
+            background: #0cb8b6;
+            border-color: #0cb8b6;
+            color: #fff;
+            font-weight: 600;
+        }
+</style>
+
+<div class="rc-wrapper">
+
+    <div class="rc-sidebar">
+        <nav class="rc-sidebar-nav">
+            <a href="/UserAccount/Dashboard"><i class="fas fa-th-large"></i> Dashboard</a>
+            <a href="/UserAccount/AppointmentManagement"><i class="fas fa-calendar-plus"></i> Appointments</a>
+            <a href="/UserAccount/Patients"><i class="fas fa-users"></i> Patients</a>
+            <a href="/UserAccount/Therapists" class="rc-active"><i class="fas fa-user-md"></i> Therapists</a>
+            <a href="/UserAccount/Payment"><i class="fas fa-credit-card"></i> Payment</a>
+        </nav>
+    </div>
+
+    <div class="rc-content" ng-controller="UserAccountController" ng-init="loadTherapists()">
+
+        <div style="margin-bottom:24px;">
+            <h2 style="font-size:22px; font-weight:800; color:#1a2942; margin:0;">Therapists' Schedule</h2>
+            <p style="font-size:13px; color:#aaa; margin:2px 0 0;">Manage therapist availability and schedules</p>
+        </div>
+
+        <div class="row">
+
+            <div class="col-lg-4 col-md-5 mb-4">
+                <div class="contact-area style-two" style="box-shadow:0 4px 24px rgba(0,0,0,0.10); border-radius:8px; padding:30px;">
+
+                    <div class="section-title mb-3">
+                        <h3>{{therapistEditIndex === -1 ? 'Add Therapist' : 'Edit Therapist'}}</h3>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Therapist Name <span style="color:#e53935;">*</span></label>
+                        <div style="position:relative;">
+                            <i class="fas fa-user-md" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; z-index:1;"></i>
+                            <input type="text" class="form-control" style="padding-left:36px;"
+                                   ng-model="TherapistName"
+                                   ng-change="validateTherapistName()"
+                                   placeholder="e.g. Dr. Santos"
+                                   maxlength="60" />
+                        </div>
+                        <small style="color:#e53935;" ng-show="therapistErrors.TherapistName">{{therapistErrors.TherapistName}}</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Specialty <span style="color:#e53935;">*</span></label>
+                        <div style="position:relative;">
+                            <i class="fas fa-hand-holding-medical" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; z-index:1;"></i>
+                            <select class="form-control" style="padding-left:36px; appearance:none; -webkit-appearance:none;"
+                                    ng-model="TherapistSpecialty"
+                                    ng-change="validateTherapistSpecialty()">
+                                <option value="">-- Select Specialty --</option>
+                                <option value="Physical Therapy">Physical Therapy</option>
+                                <option value="Occupational Therapy">Occupational Therapy</option>
+                                <option value="Respiratory Therapy">Respiratory Therapy</option>
+                                <option value="Speech-Language Therapy">Speech-Language Therapy</option>
+                            </select>
+                            <i class="fas fa-chevron-down" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; pointer-events:none;"></i>
+                        </div>
+                        <small style="color:#e53935;" ng-show="therapistErrors.TherapistSpecialty">{{therapistErrors.TherapistSpecialty}}</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Available Days <span style="color:#e53935;">*</span></label>
+                        <div class="day-checks">
+                            <span ng-repeat="day in allDays"
+                                  class="day-pill"
+                                  ng-class="{'selected': therapistDays.indexOf(day) >= 0}"
+                                  ng-click="toggleDay(day)">
+                                {{day}}
+                            </span>
+                        </div>
+                        <small style="color:#e53935;" ng-show="therapistErrors.TherapistDays">{{therapistErrors.TherapistDays}}</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Time From <span style="color:#e53935;">*</span></label>
+                        <div style="position:relative;">
+                            <i class="fas fa-clock" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; z-index:1;"></i>
+                            <select class="form-control" style="padding-left:36px; appearance:none; -webkit-appearance:none;"
+                                    ng-model="TherapistTimeFrom"
+                                    ng-change="validateTherapistTime()">
+                                <option value="">-- Start Time --</option>
+                                <option value="7:00 AM">7:00 AM</option>
+                                <option value="8:00 AM">8:00 AM</option>
+                                <option value="9:00 AM">9:00 AM</option>
+                                <option value="10:00 AM">10:00 AM</option>
+                                <option value="11:00 AM">11:00 AM</option>
+                                <option value="12:00 PM">12:00 PM</option>
+                                <option value="1:00 PM">1:00 PM</option>
+                                <option value="2:00 PM">2:00 PM</option>
+                                <option value="3:00 PM">3:00 PM</option>
+                            </select>
+                            <i class="fas fa-chevron-down" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; pointer-events:none;"></i>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Time To <span style="color:#e53935;">*</span></label>
+                        <div style="position:relative;">
+                            <i class="fas fa-clock" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; z-index:1;"></i>
+                            <select class="form-control" style="padding-left:36px; appearance:none; -webkit-appearance:none;"
+                                    ng-model="TherapistTimeTo"
+                                    ng-change="validateTherapistTime()">
+                                <option value="">-- End Time --</option>
+                                <option value="10:00 AM">10:00 AM</option>
+                                <option value="11:00 AM">11:00 AM</option>
+                                <option value="12:00 PM">12:00 PM</option>
+                                <option value="1:00 PM">1:00 PM</option>
+                                <option value="2:00 PM">2:00 PM</option>
+                                <option value="3:00 PM">3:00 PM</option>
+                                <option value="4:00 PM">4:00 PM</option>
+                                <option value="5:00 PM">5:00 PM</option>
+                                <option value="6:00 PM">6:00 PM</option>
+                            </select>
+                            <i class="fas fa-chevron-down" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; pointer-events:none;"></i>
+                        </div>
+                        <small style="color:#e53935;" ng-show="therapistErrors.TherapistTime">{{therapistErrors.TherapistTime}}</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Availability Status <span style="color:#e53935;">*</span></label>
+                        <div style="position:relative;">
+                            <i class="fas fa-toggle-on" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; z-index:1;"></i>
+                            <select class="form-control" style="padding-left:36px; appearance:none; -webkit-appearance:none;"
+                                    ng-model="TherapistStatus"
+                                    ng-change="validateTherapistStatus()">
+                                <option value="">-- Select Status --</option>
+                                <option value="Available">Available</option>
+                                <option value="Unavailable">Unavailable</option>
+                            </select>
+                            <i class="fas fa-chevron-down" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; pointer-events:none;"></i>
+                        </div>
+                        <small style="color:#e53935;" ng-show="therapistErrors.TherapistStatus">{{therapistErrors.TherapistStatus}}</small>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6 mb-2">
+                            <button type="button" class="btn-style-one" style="width:100%; text-align:center;"
+                                    ng-click="saveTherapistFunc()">
+                                <i class="fas fa-save"></i>
+                                {{therapistEditIndex === -1 ? ' Add' : ' Update'}}
+                            </button>
+                        </div>
+                        <div class="col-6 mb-2">
+                            <button type="button" class="btn-style-one" style="width:100%; text-align:center; background:#6c757d;"
+                                    ng-click="cancelTherapistFunc()">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-lg-8 col-md-7 mb-4">
+                <div class="contact-area style-two" style="box-shadow:0 4px 24px rgba(0,0,0,0.10); border-radius:8px; padding:30px;">
+
+                    <div class="section-title mb-3"><h3>Therapist List</h3></div>
+
+                    <div class="query-section">
+                        <p class="filter-label"><i class="fas fa-search"></i> Basic Search</p>
+                        <div class="row">
+                            <div class="col-md-7 mb-2">
+                                <div style="position:relative;">
+                                    <i class="fas fa-search" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; z-index:1;"></i>
+                                    <input type="text" class="form-control" style="padding-left:36px;"
+                                           ng-model="therapistSearch"
+                                           ng-change="resetTherapistPage()"
+                                           placeholder="Search therapist name..." />
+                                </div>
+                            </div>
+                            <div class="col-md-5 mb-2">
+                                <div style="position:relative;">
+                                    <i class="fas fa-hand-holding-medical" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; z-index:1;"></i>
+                                    <select class="form-control" style="padding-left:36px; appearance:none; -webkit-appearance:none;"
+                                            ng-model="therapistSpecialtyFilter"
+                                            ng-change="resetTherapistPage()">
+                                        <option value="">All Specialties</option>
+                                        <option value="Physical Therapy">Physical Therapy</option>
+                                        <option value="Occupational Therapy">Occupational Therapy</option>
+                                        <option value="Respiratory Therapy">Respiratory Therapy</option>
+                                        <option value="Speech-Language Therapy">Speech-Language Therapy</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; pointer-events:none;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="query-section">
+                        <p class="filter-label"><i class="fas fa-filter"></i> Advanced Filter</p>
+                        <div class="row align-items-center">
+                            <div class="col-md-4 mb-2">
+                                <div style="position:relative;">
+                                    <i class="fas fa-toggle-on" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; z-index:1;"></i>
+                                    <select class="form-control" style="padding-left:36px; appearance:none; -webkit-appearance:none;"
+                                            ng-model="therapistStatusFilter"
+                                            ng-change="resetTherapistPage()">
+                                        <option value="">All Status</option>
+                                        <option value="Available">Available</option>
+                                        <option value="Unavailable">Unavailable</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; pointer-events:none;"></i>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <div style="position:relative;">
+                                    <i class="fas fa-calendar-week" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; z-index:1;"></i>
+                                    <select class="form-control" style="padding-left:36px; appearance:none; -webkit-appearance:none;"
+                                            ng-model="therapistDayFilter"
+                                            ng-change="resetTherapistPage()">
+                                        <option value="">All Days</option>
+                                        <option ng-repeat="day in allDays" value="{{day}}">{{day}}</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); color:#0cb8b6; pointer-events:none;"></i>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <button type="button" class="btn-style-one" style="width:100%; text-align:center;"
+                                        ng-click="resetTherapistFilters()">
+                                    <i class="fas fa-undo"></i> Reset
+                                </button>
+                            </div>
+                        </div>
+
+                        <div ng-if="hasActiveTherapistFilters()" style="margin-top:8px; font-size:12px; color:#0cb8b6;">
+                            <i class="fas fa-info-circle"></i>
+                            Filtering by:
+                            <strong ng-if="therapistSearch">name "{{therapistSearch}}"</strong>
+                            <span ng-if="therapistSearch && (therapistSpecialtyFilter || therapistStatusFilter || therapistDayFilter)"> + </span>
+                            <strong ng-if="therapistSpecialtyFilter">specialty "{{therapistSpecialtyFilter}}"</strong>
+                            <span ng-if="therapistSpecialtyFilter && (therapistStatusFilter || therapistDayFilter)"> + </span>
+                            <strong ng-if="therapistStatusFilter">status "{{therapistStatusFilter}}"</strong>
+                            <span ng-if="therapistStatusFilter && therapistDayFilter"> + </span>
+                            <strong ng-if="therapistDayFilter">day "{{therapistDayFilter}}"</strong>
+                            &nbsp;—&nbsp;<strong>{{getFilteredTherapists().length}}</strong> result(s)
+                        </div>
+                    </div>
+
+                    <div ng-if="therapistArray.length === 0" class="text-center py-4" style="color:#aaa;">
+                        <i class="fas fa-user-md" style="font-size:48px; display:block; margin-bottom:10px;"></i>
+                        No therapists added yet. Use the form to add one.
+                    </div>
+                    <div ng-if="therapistArray.length > 0 && getFilteredTherapists().length === 0" class="text-center py-4" style="color:#aaa;">
+                        <i class="fas fa-search" style="font-size:48px; display:block; margin-bottom:10px;"></i>
+                        No therapists match your filters.
+                    </div>
+
+                    <!-- DYNAMIC TABLE -->
+                    <div class="table-responsive" ng-if="getFilteredTherapists().length > 0">
+                        <table class="table table-hover" style="background:#fff;">
+                            <thead style="background:#0cb8b6; color:#fff;">
+                                <tr>
+                                    <th>#</th>
+                                    <th class="sortable-th" ng-click="sortTherapists('TherapistName')">
+                                        Name <i class="fas sort-icon" ng-class="therapistSortField==='TherapistName'?(therapistSortReverse?'fa-sort-down':'fa-sort-up'):'fa-sort'"></i>
+                                    </th>
+                                    <th class="sortable-th" ng-click="sortTherapists('TherapistSpecialty')">
+                                        Specialty <i class="fas sort-icon" ng-class="therapistSortField==='TherapistSpecialty'?(therapistSortReverse?'fa-sort-down':'fa-sort-up'):'fa-sort'"></i>
+                                    </th>
+                                    <th>Available Days</th>
+                                    <th class="sortable-th" ng-click="sortTherapists('TherapistTimeFrom')">
+                                        Hours <i class="fas sort-icon" ng-class="therapistSortField==='TherapistTimeFrom'?(therapistSortReverse?'fa-sort-down':'fa-sort-up'):'fa-sort'"></i>
+                                    </th>
+                                    <th class="sortable-th" ng-click="sortTherapists('TherapistStatus')">
+                                        Status <i class="fas sort-icon" ng-class="therapistSortField==='TherapistStatus'?(therapistSortReverse?'fa-sort-down':'fa-sort-up'):'fa-sort'"></i>
+                                    </th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="t in getPagedTherapists()"
+                                    ng-class="{'table-active': therapistEditIndex === therapistArray.indexOf(t)}">
+                                    <td>{{getTherapistRowNumber($index)}}</td>
+                                    <td><strong>{{t.TherapistName}}</strong></td>
+                                    <td>{{t.TherapistSpecialty}}</td>
+                                    <td>
+                                        <span class="day-badge" ng-repeat="day in t.TherapistDays">{{day}}</span>
+                                    </td>
+                                    <td>{{t.TherapistTimeFrom}} – {{t.TherapistTimeTo}}</td>
+                                    <td>
+                                        <span ng-if="t.TherapistStatus === 'Available'" class="status-available">
+                                            <i class="fas fa-check-circle"></i> Available
+                                        </span>
+                                        <span ng-if="t.TherapistStatus === 'Unavailable'" class="status-unavailable">
+                                            <i class="fas fa-times-circle"></i> Unavailable
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm" style="background:#0cb8b6; color:#fff; margin-right:4px;"
+                                                ng-click="editTherapistFunc(therapistArray.indexOf(t))">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </button>
+                                        <button class="btn btn-sm btn-danger"
+                                                ng-click="delTherapistFunc(therapistArray.indexOf(t))">
+                                            <i class="fas fa-trash-alt"></i> Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- PAGINATION -->
+                        <div class="pagination-bar">
+                            <span class="page-info">
+                                Showing {{getTherapistRangeStart()}}–{{getTherapistRangeEnd()}} of {{getFilteredTherapists().length}} therapists
+                            </span>
+                            <div class="pagination-btns">
+                                <button ng-click="goToTherapistPage(1)" ng-disabled="therapistPage === 1">First</button>
+                                <button ng-click="prevTherapistPage()" ng-disabled="therapistPage === 1">&#8249;</button>
+                                <button ng-repeat="p in getTherapistPages() track by p"
+                                        ng-class="{'active': p === $parent.therapistPage}"
+                                        ng-click="goToTherapistPage(p)">
+                                    {{p}}
+                                </button>
+                                <button ng-click="nextTherapistPage()" ng-disabled="therapistPage === getTherapistTotalPages()">&#8250;</button>
+                                <button ng-click="goToTherapistPage(getTherapistTotalPages())" ng-disabled="therapistPage === getTherapistTotalPages()">Last</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
