@@ -1103,8 +1103,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\Maps\" />
-    <Folder Include="Models\Tables\" />
+    <Folder Include="Uploads\Receipts\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
